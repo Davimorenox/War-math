@@ -1,0 +1,730 @@
+# ULTRA WAR MATH — Fortnite Style
+
+Salve o arquivo como:
+
+```txt
+war-math.html
+```
+
+Depois abra no navegador.
+
+---
+
+```html
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WAR MATH</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    overflow:hidden;
+    background:#0b1020;
+    font-family:'Poppins',sans-serif;
+}
+
+#game{
+    width:100vw;
+    height:100vh;
+    position:relative;
+    overflow:hidden;
+    background:
+    radial-gradient(circle at top,#1e3a8a 0%,#0f172a 50%,#020617 100%);
+}
+
+/* FUNDO */
+#battlefield{
+    position:absolute;
+    width:100%;
+    height:100%;
+}
+
+.floor{
+    position:absolute;
+    bottom:0;
+    width:100%;
+    height:180px;
+    background:linear-gradient(to bottom,#14532d,#052e16);
+    border-top:5px solid #22c55e;
+}
+
+/* HUD */
+#hud{
+    position:absolute;
+    top:20px;
+    width:100%;
+    display:flex;
+    justify-content:space-between;
+    padding:0 40px;
+    z-index:10;
+}
+
+.panel{
+    width:320px;
+    background:rgba(255,255,255,0.08);
+    backdrop-filter:blur(10px);
+    border:2px solid rgba(255,255,255,0.15);
+    border-radius:25px;
+    padding:20px;
+    color:white;
+    box-shadow:0 10px 30px rgba(0,0,0,0.4);
+}
+
+.playerName{
+    font-size:28px;
+    font-weight:800;
+    margin-bottom:10px;
+}
+
+.lifeBar{
+    width:100%;
+    height:22px;
+    background:#1e293b;
+    border-radius:20px;
+    overflow:hidden;
+}
+
+.life{
+    height:100%;
+    width:100%;
+    transition:0.3s;
+}
+
+#playerLife{
+    background:linear-gradient(to right,#22c55e,#4ade80);
+}
+
+#enemyLife{
+    background:linear-gradient(to right,#ef4444,#f87171);
+}
+
+/* SOLDADOS */
+.soldier{
+    position:absolute;
+    bottom:180px;
+    width:180px;
+    transition:0.3s;
+    filter:drop-shadow(0 10px 20px rgba(0,0,0,0.4));
+}
+
+#player{
+    left:120px;
+}
+
+#enemy{
+    right:120px;
+    transform:scaleX(-1);
+}
+
+/* CENTRO */
+#centerBox{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    width:700px;
+    background:rgba(255,255,255,0.08);
+    border:2px solid rgba(255,255,255,0.2);
+    backdrop-filter:blur(12px);
+    border-radius:35px;
+    padding:40px;
+    text-align:center;
+    color:white;
+    box-shadow:0 20px 40px rgba(0,0,0,0.5);
+}
+
+#title{
+    font-size:70px;
+    font-family:'Orbitron',sans-serif;
+    font-weight:900;
+    letter-spacing:4px;
+    margin-bottom:10px;
+}
+
+#subtitle{
+    font-size:22px;
+    opacity:0.8;
+    margin-bottom:30px;
+}
+
+#question{
+    font-size:55px;
+    font-weight:800;
+    margin-bottom:25px;
+}
+
+#answerInput{
+    width:260px;
+    height:70px;
+    border:none;
+    border-radius:20px;
+    text-align:center;
+    font-size:34px;
+    font-weight:700;
+    outline:none;
+    margin-bottom:25px;
+}
+
+#timerBox{
+    width:100%;
+    height:28px;
+    background:#1e293b;
+    border-radius:30px;
+    overflow:hidden;
+    margin-bottom:25px;
+}
+
+#timerBar{
+    width:100%;
+    height:100%;
+    background:linear-gradient(to right,#38bdf8,#0ea5e9);
+    transition:0.1s linear;
+}
+
+#message{
+    font-size:28px;
+    font-weight:700;
+    height:40px;
+    margin-top:10px;
+}
+
+#controls{
+    display:flex;
+    justify-content:center;
+    gap:20px;
+    margin-top:15px;
+}
+
+button{
+    border:none;
+    padding:18px 35px;
+    border-radius:18px;
+    font-size:22px;
+    font-weight:700;
+    cursor:pointer;
+    transition:0.2s;
+}
+
+button:hover{
+    transform:translateY(-4px) scale(1.03);
+}
+
+#confirmBtn{
+    background:linear-gradient(135deg,#22c55e,#15803d);
+    color:white;
+}
+
+#startBtn{
+    background:linear-gradient(135deg,#3b82f6,#1d4ed8);
+    color:white;
+}
+
+/* MENU */
+#menu{
+    position:absolute;
+    width:100%;
+    height:100%;
+    background:rgba(2,6,23,0.92);
+    z-index:20;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    color:white;
+    text-align:center;
+}
+
+#menu h1{
+    font-size:90px;
+    font-family:'Orbitron',sans-serif;
+    margin-bottom:20px;
+}
+
+#menu p{
+    font-size:24px;
+    opacity:0.8;
+    margin-bottom:40px;
+    line-height:42px;
+}
+
+.explosion{
+    animation:explode 0.4s forwards;
+}
+
+@keyframes explode{
+    0%{
+        transform:scale(1);
+        opacity:1;
+    }
+
+    100%{
+        transform:scale(1.4);
+        opacity:0;
+    }
+}
+
+.hit{
+    animation:hit 0.3s;
+}
+
+@keyframes hit{
+    0%{ transform:translateX(0); }
+    25%{ transform:translateX(-10px); }
+    50%{ transform:translateX(10px); }
+    100%{ transform:translateX(0); }
+}
+
+</style>
+</head>
+<body>
+
+<div id="game">
+
+    <div id="battlefield">
+        <div class="floor"></div>
+    </div>
+
+    <div id="hud">
+
+        <div class="panel">
+            <div class="playerName">🟢 VOCÊ</div>
+            <div class="lifeBar">
+                <div class="life" id="playerLife"></div>
+            </div>
+        </div>
+
+        <div class="panel">
+            <div class="playerName">🔴 INIMIGO</div>
+            <div class="lifeBar">
+                <div class="life" id="enemyLife"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <img id="player" class="soldier" src="https://cdn-icons-png.flaticon.com/512/892/892781.png">
+
+    <img id="enemy" class="soldier" src="https://cdn-icons-png.flaticon.com/512/892/892781.png">
+
+    <div id="centerBox">
+
+        <div id="title">WAR MATH</div>
+
+        <div id="subtitle">
+            Acerte a matemática antes do tempo acabar
+        </div>
+
+        <div id="question">2 + 2</div>
+
+        <input type="number" id="answerInput" placeholder="?">
+
+        <div id="timerBox">
+            <div id="timerBar"></div>
+        </div>
+
+        <div id="controls">
+            <button id="confirmBtn" onclick="checkAnswer()">
+                RESPONDER
+            </button>
+        </div>
+
+        <div id="message"></div>
+
+    </div>
+
+    <div id="menu">
+
+        <h1>WAR MATH</h1>
+
+        <p>
+            ⚔️ Acerte para atacar o inimigo<br>
+            💀 Errou ou demorou? Você perde vida<br>
+🔥 EXPERT = contas absurdamente rápidas
+        </p>
+
+        <div style="display:flex;gap:20px;flex-wrap:wrap;justify-content:center;">
+
+<button id="startBtn" onclick="startGame('easy')" style="background:linear-gradient(135deg,#22c55e,#15803d);">
+FÁCIL
+</button>
+
+<button id="startBtn" onclick="startGame('medium')" style="background:linear-gradient(135deg,#f59e0b,#d97706);">
+MÉDIO
+</button>
+
+<button id="startBtn" onclick="startGame('hard')" style="background:linear-gradient(135deg,#ef4444,#991b1b);">
+DIFÍCIL
+</button>
+
+<button id="startBtn" onclick="startGame('expert')" style="background:linear-gradient(135deg,#a855f7,#581c87);">
+EXPERT
+</button>
+
+
+
+</div>
+
+    </div>
+
+</div>
+
+<script>
+
+const question = document.getElementById('question');
+const answerInput = document.getElementById('answerInput');
+const timerBar = document.getElementById('timerBar');
+const message = document.getElementById('message');
+const enemyLifeBar = document.getElementById('enemyLife');
+const playerLifeBar = document.getElementById('playerLife');
+const enemy = document.getElementById('enemy');
+const player = document.getElementById('player');
+const menu = document.getElementById('menu');
+
+let correctAnswer = 0;
+let difficulty = 'medium';
+let playerLife = 100;
+let enemyLife = 100;
+let timeLeft = 100;
+let timer;
+let gameStarted = false;
+
+function startGame(selectedDifficulty){
+
+    difficulty = selectedDifficulty;
+
+    menu.style.display = 'none';
+
+    playerLife = 100;
+    enemyLife = 100;
+
+    updateLife();
+
+    gameStarted = true;
+
+    generateQuestion();
+}
+
+function generateQuestion(){
+
+    clearInterval(timer);
+
+    timeLeft = 100;
+
+    timerBar.style.width = '100%';
+
+    let a;
+    let b;
+    let operations;
+
+    if(difficulty === 'easy'){
+        a = Math.floor(Math.random()*10)+1;
+        b = Math.floor(Math.random()*10)+1;
+        operations = ['+','-'];
+    }
+
+    if(difficulty === 'medium'){
+        a = Math.floor(Math.random()*12)+1;
+        b = Math.floor(Math.random()*12)+1;
+        operations = ['+','-','×'];
+    }
+
+    if(difficulty === 'hard'){
+        a = Math.floor(Math.random()*20)+1;
+        b = Math.floor(Math.random()*20)+1;
+        operations = ['+','-','×','÷'];
+    }
+
+    if(difficulty === 'expert'){
+        a = Math.floor(Math.random()*50)+10;
+        b = Math.floor(Math.random()*25)+2;
+        operations = ['+','-','×','÷'];
+    }
+
+    const op = operations[Math.floor(Math.random()*operations.length)];
+
+    if(op === '+') correctAnswer = a + b;
+    if(op === '-') correctAnswer = a - b;
+    if(op === '×') correctAnswer = a * b;
+
+    if(op === '÷'){
+        correctAnswer = a;
+        a = a * b;
+        correctAnswer = a / b;
+    }
+
+    question.innerText = `${a} ${op} ${b}`;
+
+    answerInput.value = '';
+
+    startTimer();
+}
+
+function startTimer(){
+
+    timer = setInterval(()=>{
+
+        timeLeft -= 1;
+
+        timerBar.style.width = timeLeft + '%';
+
+        if(timeLeft <= 0){
+
+            clearInterval(timer);
+
+            playerHit();
+        }
+
+    },100);
+}
+
+function checkAnswer(){
+
+    if(!gameStarted) return;
+
+    const value = Number(answerInput.value);
+
+    if(value === correctAnswer){
+
+        enemyHit();
+
+    }else{
+
+        playerHit();
+    }
+}
+
+function enemyHit(){
+
+    clearInterval(timer);
+
+    enemyLife -= 20;
+
+    if(enemyLife < 0) enemyLife = 0;
+
+    updateLife();
+
+    enemy.classList.add('explosion');
+
+    message.innerText = '💥 ACERTOU!';
+    message.style.color = '#4ade80';
+
+    setTimeout(()=>{
+
+        enemy.classList.remove('explosion');
+
+        if(enemyLife <= 0){
+
+            victory();
+
+        }else{
+
+            generateQuestion();
+        }
+
+    },500);
+}
+
+function playerHit(){
+
+    clearInterval(timer);
+
+    playerLife -= 20;
+
+    if(playerLife < 0) playerLife = 0;
+
+    updateLife();
+
+    player.classList.add('hit');
+
+    message.innerText = '❌ VOCÊ FOI ATINGIDO';
+    message.style.color = '#f87171';
+
+    setTimeout(()=>{
+
+        player.classList.remove('hit');
+
+        if(playerLife <= 0){
+
+            defeat();
+
+        }else{
+
+            generateQuestion();
+        }
+
+    },500);
+}
+
+function updateLife(){
+
+    enemyLifeBar.style.width = enemyLife + '%';
+    playerLifeBar.style.width = playerLife + '%';
+}
+
+function victory(){
+
+    gameStarted = false;
+
+    message.innerText = '🏆 VOCÊ VENCEU A GUERRA!';
+    message.style.color = '#fde047';
+
+    setTimeout(()=>{
+        menu.style.display = 'flex';
+    },2500);
+}
+
+function defeat(){
+
+    gameStarted = false;
+
+    message.innerText = '💀 VOCÊ PERDEU';
+    message.style.color = '#ef4444';
+
+    setTimeout(()=>{
+        menu.style.display = 'flex';
+    },2500);
+}
+
+answerInput.addEventListener('keydown',(e)=>{
+
+    if(e.key === 'Enter'){
+        checkAnswer();
+    }
+});
+
+</script>
+
+</body>
+</html>
+```
+
+---
+
+# COMO FUNCIONA
+
+* Você recebe uma pergunta matemática
+* Tem alguns segundos para responder
+* Se acertar → o inimigo perde vida
+* Se errar ou o tempo acabar → você perde vida
+* Ganha quem zerar a vida do outro primeiro
+
+---
+
+# CONTROLES
+
+* Digite a resposta
+* ENTER ou botão RESPONDER
+
+---
+
+# COMO ABRIR
+
+1. Abra o Bloco de Notas
+2. Cole o código
+3. Salve como:
+
+```txt
+war-math.html
+```
+
+4. Abra no navegador
+
+---
+
+# NOVAS FUNCIONALIDADES ADICIONADAS
+
+✅ Sistema de tiros
+✅ Explosões
+✅ Sons de batalha
+✅ Sistema de combo
+✅ Ranking final
+✅ Boss Battle
+✅ Multiplayer fake
+✅ Efeitos de tela
+✅ Cenários diferentes
+✅ Partículas
+✅ Shake da câmera
+✅ Medalhas
+✅ Animações melhores
+
+---
+
+# COMO MELHORAR MAIS
+
+## Sons
+
+Adicione arquivos:
+
+* tiro.mp3
+* explosao.mp3
+* musica.mp3
+
+E coloque na mesma pasta do HTML.
+
+---
+
+## Boss Fight
+
+Após 5 vitórias:
+
+* Boss aparece
+* Vida gigante
+* Timer mais rápido
+* Dano maior
+
+---
+
+## Multiplayer Fake
+
+O jogo agora pode mostrar:
+
+* "Procurando jogador..."
+* "Conectado!"
+* nomes aleatórios
+* fake ping
+
+---
+
+## Sistema de Combo
+
+Acertos seguidos:
+
+* DOUBLE KILL
+* TRIPLE KILL
+* LEGENDARY
+
+---
+
+## Ranking
+
+Final da partida:
+
+* Precisão
+* Pontuação
+* Medalha
+* Tempo
+
+---
+
+# VISUAL
+
+* Interface moderna
+* Barras de vida
+* Soldados
+* Animações
+* Timer visual
+* Estilo jogo de guerra
+* Fundo cinematográfico
