@@ -27,30 +27,32 @@ body{
     width:100vw;
     height:100vh;
     position:relative;
+    overflow:hidden;
     background:radial-gradient(circle at top,#1e3a8a 0%,#0f172a 50%,#020617 100%);
 }
 
 /* HUD */
 #hud{
     position:absolute;
-    top:10px;
+    top:5px;
     width:100%;
     display:flex;
     flex-direction:column;
-    gap:10px;
+    gap:6px;
     padding:0 10px;
+    z-index:10;
 }
 
 .panel{
     background:rgba(255,255,255,0.08);
-    border-radius:16px;
-    padding:10px;
+    border-radius:14px;
+    padding:8px;
     color:white;
-    backdrop-filter:blur(10px);
+    font-size:12px;
 }
 
 .lifeBar{
-    height:14px;
+    height:10px;
     background:#1e293b;
     border-radius:20px;
     overflow:hidden;
@@ -68,60 +70,63 @@ body{
 /* SOLDADOS */
 .soldier{
     position:absolute;
-    bottom:120px;
-    width:90px;
+    bottom:110px;
+    width:70px;
 }
 
 #player{ left:10px; }
 #enemy{ right:10px; transform:scaleX(-1); }
 
-/* CENTRO */
+/* CENTRO (MENOR PRA CABER NA TELA) */
 #centerBox{
     position:absolute;
-    top:55%;
+    top:52%;
     left:50%;
     transform:translate(-50%,-50%);
-    width:95%;
+    width:92%;
+    max-height:60vh;
     background:rgba(255,255,255,0.08);
-    border-radius:20px;
-    padding:18px;
+    border-radius:18px;
+    padding:12px;
     color:white;
     text-align:center;
     backdrop-filter:blur(10px);
 }
 
+/* TITULO */
 #title{
     font-family:'Orbitron';
-    font-size:34px;
+    font-size:26px;
     font-weight:900;
 }
 
+/* QUESTÃO */
 #question{
-    font-size:40px;
+    font-size:34px;
     font-weight:800;
-    margin:10px 0;
+    margin:6px 0;
 }
 
+/* RESPOSTA */
 #answerDisplay{
     background:white;
     color:black;
-    height:60px;
-    border-radius:14px;
+    height:50px;
+    border-radius:12px;
     display:flex;
     align-items:center;
     justify-content:center;
-    font-size:28px;
+    font-size:24px;
     font-weight:800;
-    margin-bottom:10px;
 }
 
 /* TIMER */
 #timerBox{
-    height:14px;
+    height:10px;
     background:#1e293b;
     border-radius:20px;
     overflow:hidden;
-    margin-bottom:10px;
+    margin:8px 0;
 }
 
 #timerBar{
@@ -134,45 +139,41 @@ body{
 #customKeyboard{
     display:grid;
     grid-template-columns:repeat(3,1fr);
-    gap:10px;
+    gap:6px;
+    margin-top:6px;
 }
 
 /* BOTÕES */
-#customKeyboard button{
-    height:58px;
-    font-size:22px;
+.key{
+    height:48px;
+    font-size:18px;
     font-weight:800;
     border:none;
-    border-radius:14px;
+    border-radius:12px;
     color:white;
     background:linear-gradient(135deg,#334155,#0f172a);
-    box-shadow:0 6px 12px rgba(0,0,0,0.35);
     transition:0.15s;
 }
 
-/* animação toque */
-#customKeyboard button:active{
+/* ANIMAÇÃO TOQUE */
+.key:active{
     transform:scale(0.88);
     filter:brightness(1.3);
 }
 
-/* BACKSPACE / OK */
-#customKeyboard button:nth-child(10){
-    background:linear-gradient(135deg,#ef4444,#991b1b);
-}
+/* ESPECIAIS */
+.danger{ background:linear-gradient(135deg,#ef4444,#991b1b); }
+.ok{ background:linear-gradient(135deg,#22c55e,#15803d); }
+.zero{ background:linear-gradient(135deg,#475569,#0f172a); }
 
-#customKeyboard button:nth-child(12){
-    background:linear-gradient(135deg,#22c55e,#15803d);
-}
-
-/* BOTÃO RESPONDER */
+/* BOTÃO PRINCIPAL */
 #confirmBtn{
-    margin-top:10px;
+    margin-top:8px;
     width:100%;
-    padding:16px;
+    padding:12px;
     border:none;
-    border-radius:16px;
-    font-size:18px;
+    border-radius:12px;
+    font-size:16px;
     font-weight:800;
     color:white;
     background:linear-gradient(135deg,#22c55e,#15803d);
@@ -183,7 +184,7 @@ body{
     position:absolute;
     width:100%;
     height:100%;
-    background:rgba(0,0,0,0.85);
+    background:rgba(0,0,0,0.9);
     display:flex;
     flex-direction:column;
     justify-content:center;
@@ -193,23 +194,21 @@ body{
 
 #menu h1{
     font-family:'Orbitron';
-    font-size:45px;
-    margin-bottom:20px;
+    font-size:36px;
+    margin-bottom:10px;
 }
 
-/* 🔥 BOTÕES DE DIFICULDADE */
 .menu-btn{
     width:80%;
-    margin:6px 0;
-    padding:14px;
-    font-size:18px;
-    font-weight:800;
+    margin:5px 0;
+    padding:12px;
     border:none;
-    border-radius:14px;
+    border-radius:12px;
+    font-size:16px;
+    font-weight:800;
     color:white;
 }
 
-/* CORES DAS DIFICULDADES */
 .easy{ background:linear-gradient(135deg,#22c55e,#15803d); }
 .medium{ background:linear-gradient(135deg,#f59e0b,#d97706); }
 .hard{ background:linear-gradient(135deg,#ef4444,#991b1b); }
@@ -223,8 +222,13 @@ body{
 <div id="game">
 
 <div id="hud">
-    <div class="panel">🟢 VOCÊ <div class="lifeBar"><div id="playerLife" class="life"></div></div></div>
-    <div class="panel">🔴 INIMIGO <div class="lifeBar"><div id="enemyLife" class="life"></div></div></div>
+    <div class="panel">🟢 VOCÊ
+        <div class="lifeBar"><div id="playerLife" class="life"></div></div>
+    </div>
+
+    <div class="panel">🔴 INIMIGO
+        <div class="lifeBar"><div id="enemyLife" class="life"></div></div>
+    </div>
 </div>
 
 <img id="player" class="soldier" src="https://cdn-icons-png.flaticon.com/512/892/892781.png">
@@ -233,27 +237,36 @@ body{
 <div id="centerBox">
 
 <div id="title">WAR MATH</div>
+
 <div id="question">2 + 2</div>
+
 <div id="answerDisplay">?</div>
 
 <div id="timerBox"><div id="timerBar"></div></div>
 
+<!-- TECLADO -->
 <div id="customKeyboard">
-    <button onclick="press(this,'1')">1</button>
-    <button onclick="press(this,'2')">2</button>
-    <button onclick="press(this,'3')">3</button>
 
-    <button onclick="press(this,'4')">4</button>
-    <button onclick="press(this,'5')">5</button>
-    <button onclick="press(this,'6')">6</button>
+<button class="key" onclick="press('1')">1</button>
+<button class="key" onclick="press('2')">2</button>
+<button class="key" onclick="press('3')">3</button>
 
-    <button onclick="press(this,'7')">7</button>
-    <button onclick="press(this,'8')">8</button>
-    <button onclick="press(this,'9')">9</button>
+<button class="key" onclick="press('4')">4</button>
+<button class="key" onclick="press('5')">5</button>
+<button class="key" onclick="press('6')">6</button>
 
-    <button onclick="backspace(this)">⌫</button>
-    <button onclick="press(this,'0')">0</button>
-    <button onclick="checkAnswer(this)">✓</button>
+<button class="key" onclick="press('7')">7</button>
+<button class="key" onclick="press('8')">8</button>
+<button class="key" onclick="press('9')">9</button>
+
+<!-- BOTÃO MENOS (BACKSPACE) -->
+<button class="key danger" onclick="backspace()">-</button>
+
+<button class="key zero" onclick="press('0')">0</button>
+
+<!-- CONFIRMAR -->
+<button class="key ok" onclick="checkAnswer()">✓</button>
+
 </div>
 
 <button id="confirmBtn" onclick="checkAnswer()">RESPONDER</button>
@@ -261,58 +274,57 @@ body{
 </div>
 
 <div id="menu">
-    <h1>WAR MATH</h1>
 
-    <button class="menu-btn easy" onclick="startGame('easy')">FÁCIL</button>
-    <button class="menu-btn medium" onclick="startGame('medium')">MÉDIO</button>
-    <button class="menu-btn hard" onclick="startGame('hard')">DIFÍCIL</button>
-    <button class="menu-btn expert" onclick="startGame('expert')">EXPERT 🔥</button>
+<h1>WAR MATH</h1>
+
+<button class="menu-btn easy" onclick="startGame('easy')">FÁCIL</button>
+<button class="menu-btn medium" onclick="startGame('medium')">MÉDIO</button>
+<button class="menu-btn hard" onclick="startGame('hard')">DIFÍCIL</button>
+<button class="menu-btn expert" onclick="startGame('expert')">EXPERT 🔥</button>
+
 </div>
 
 </div>
 
 <script>
 
-let currentAnswer="";
-let correctAnswer=0;
+let current="";
+let answer=0;
 let timer;
-let timeLeft=100;
-let enemyLife=100;
-let playerLife=100;
-let difficulty="easy";
+let time=100;
+let enemy=100;
+let player=100;
+let diff="easy";
 
 function startGame(d){
-    difficulty=d;
+    diff=d;
     document.getElementById("menu").style.display="none";
-
-    enemyLife=100;
-    playerLife=100;
-    updateLife();
-
-    generateQuestion();
+    enemy=100; player=100;
+    update();
+    gen();
 }
 
-function generateQuestion(){
+function gen(){
     clearInterval(timer);
-    timeLeft=100;
+    time=100;
     document.getElementById("timerBar").style.width="100%";
 
     let a,b,ops;
 
-    if(difficulty=="easy"){ a=rand(1,10); b=rand(1,10); ops=["+","-"]; }
-    if(difficulty=="medium"){ a=rand(1,12); b=rand(1,12); ops=["+","-","×"]; }
-    if(difficulty=="hard"){ a=rand(1,20); b=rand(1,20); ops=["+","-","×","÷"]; }
-    if(difficulty=="expert"){ a=rand(10,80); b=rand(2,40); ops=["+","-","×","÷"]; }
+    if(diff=="easy"){a=r(1,10);b=r(1,10);ops=["+","-"];}
+    if(diff=="medium"){a=r(1,12);b=r(1,12);ops=["+","-","×"];}
+    if(diff=="hard"){a=r(1,20);b=r(1,20);ops=["+","-","×","÷"];}
+    if(diff=="expert"){a=r(10,80);b=r(2,40);ops=["+","-","×","÷"];}
 
     let op=ops[Math.floor(Math.random()*ops.length)];
 
-    if(op==="+")correctAnswer=a+b;
-    if(op==="-")correctAnswer=a-b;
-    if(op==="×")correctAnswer=a*b;
-    if(op==="÷"){correctAnswer=Math.floor(a/b);a=correctAnswer*b;}
+    if(op=="+")answer=a+b;
+    if(op=="-")answer=a-b;
+    if(op=="×")answer=a*b;
+    if(op=="÷"){answer=Math.floor(a/b);a=answer*b;}
 
     document.getElementById("question").innerText=`${a} ${op} ${b}`;
-    currentAnswer="";
+    current="";
     document.getElementById("answerDisplay").innerText="?";
 
     startTimer();
@@ -320,64 +332,50 @@ function generateQuestion(){
 
 function startTimer(){
     timer=setInterval(()=>{
-        timeLeft--;
-        document.getElementById("timerBar").style.width=timeLeft+"%";
-
-        if(timeLeft<=0){
-            clearInterval(timer);
-            playerHit();
-        }
+        time--;
+        document.getElementById("timerBar").style.width=time+"%";
+        if(time<=0){clearInterval(timer);hitPlayer();}
     },100);
 }
 
-function press(btn,num){
-    animate(btn);
-    currentAnswer+=num;
-    document.getElementById("answerDisplay").innerText=currentAnswer;
+function press(n){
+    current+=n;
+    document.getElementById("answerDisplay").innerText=current;
 }
 
-function backspace(btn){
-    animate(btn);
-    currentAnswer=currentAnswer.slice(0,-1);
-    document.getElementById("answerDisplay").innerText=currentAnswer||"?";
+function backspace(){
+    current=current.slice(0,-1);
+    document.getElementById("answerDisplay").innerText=current||"?";
 }
 
-function checkAnswer(btn){
-    if(btn) animate(btn);
-
-    if(Number(currentAnswer)==correctAnswer){
-        enemyLife-=20;
-    }else{
-        playerLife-=20;
-    }
-
-    updateLife();
-    currentAnswer="";
-
-    if(enemyLife<=0){ alert("VOCÊ VENCEU!"); location.reload(); }
-    if(playerLife<=0){ alert("VOCÊ PERDEU!"); location.reload(); }
-
-    generateQuestion();
+function checkAnswer(){
+    if(Number(current)==answer)hitEnemy();
+    else hitPlayer();
+    current="";
 }
 
-function updateLife(){
-    document.getElementById("enemyLife").style.width=enemyLife+"%";
-    document.getElementById("playerLife").style.width=playerLife+"%";
+function hitEnemy(){
+    enemy-=20;
+    update();
+    if(enemy<=0)return win();
+    gen();
 }
 
-function rand(min,max){
-    return Math.floor(Math.random()*(max-min+1))+min;
+function hitPlayer(){
+    player-=20;
+    update();
+    if(player<=0)return lose();
+    gen();
 }
 
-/* 🔥 ANIMAÇÃO BOTÃO */
-function animate(btn){
-    btn.style.transform="scale(0.88)";
-    btn.style.filter="brightness(1.4)";
-    setTimeout(()=>{
-        btn.style.transform="scale(1)";
-        btn.style.filter="brightness(1)";
-    },120);
+function update(){
+    document.getElementById("enemyLife").style.width=enemy+"%";
+    document.getElementById("playerLife").style.width=player+"%";
 }
+
+function win(){alert("VOCÊ VENCEU!");location.reload();}
+function lose(){alert("VOCÊ PERDEU!");location.reload();}
+function r(a,b){return Math.floor(Math.random()*(b-a+1))+a;}
 
 </script>
 
