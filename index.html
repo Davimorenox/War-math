@@ -259,17 +259,17 @@ body{
 <button class="key" onclick="press('8')">8</button>
 <button class="key" onclick="press('9')">9</button>
 
-<!-- BOTÃO MENOS (BACKSPACE) -->
-<button class="key danger" onclick="backspace()">-</button>
+<button class="key danger" onclick="negative()">±</button>
 
 <button class="key zero" onclick="press('0')">0</button>
 
-<!-- CONFIRMAR -->
-<button class="key ok" onclick="checkAnswer()">✓</button>
+<button class="key danger" onclick="backspace()">DEL</button>
 
 </div>
 
-<button id="confirmBtn" onclick="checkAnswer()">RESPONDER</button>
+<button id="confirmBtn" onclick="checkAnswer()">
+ENVIAR
+</button>
 
 </div>
 
@@ -343,6 +343,17 @@ function press(n){
     document.getElementById("answerDisplay").innerText=current;
 }
 
+function negative(){
+
+    if(current.startsWith("-")){
+        current = current.substring(1);
+    }else{
+        current = "-" + current;
+    }
+
+    document.getElementById("answerDisplay").innerText = current || "?";
+}
+    
 function backspace(){
     current=current.slice(0,-1);
     document.getElementById("answerDisplay").innerText=current||"?";
